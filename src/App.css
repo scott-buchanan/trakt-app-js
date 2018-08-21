@@ -26,3 +26,8 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.poster img {
+  width: 150px;
+  margin: 20px;
+}

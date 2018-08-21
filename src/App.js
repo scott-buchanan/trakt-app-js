@@ -33,14 +33,21 @@ class App extends Component {
 
   componentDidMount() {
     const that = this;
+    let history = [];
     trakt.users.history({ username: 'bukes' }).then(results => {
-      retVal.history = results.map(function(history) {
-        if (history.type === "episode") {
+      console.log(1);
+      results.map(function(his) {
+        console.log(2);
+        if (his.type === "episode") {
           mdata.images.show({
-            tvdb: history.show.ids.tvdb
+            tvdb: his.show.ids.tvdb
           }).then(result => {
-            that.setState({ history: Object.assign(history.show, { poster: result.poster }) });
-            console.log(history);
+            // if (result.poster === undefined) {
+            //   result.poster = "https://trakt.tv/assets/placeholders/thumb/poster-78214cfcef8495a39d297ce96ddecea1.png"
+            // }
+            his = Object.assign(his, { poster: result.poster });
+            history.push(his);
+            that.setState({ history: history });
           });
         } else {
           // mdata.images.show({
@@ -51,7 +58,11 @@ class App extends Component {
           //   this.forceUpdate();
           // });
         }
-    })});
+      })}).then(() => {
+        console.log(4);
+        // that.setState({ history: history })
+        console.log(history);
+      });
   }
 
   render() {
@@ -65,21 +76,17 @@ class App extends Component {
         this.setState({ 'oauth': true });
       });
     }
-    
-    let r = undefined;
-    console.log(this.state.history);
+
+    const his = [];
     if (this.state.history !== undefined) {
-      console.log(this.state.history[0]);
-      console.log(this.state.history);
-      // console.log(this.state.history);
-      r = this.state.history.map(show => {
-        return <li><img src={show.poster} alt="" /></li>
+      this.state.history.map((show) => {
+        his.push(<div><img src={show.poster} alt={show.show.title} className="poster" /></div>);
       });
     }
-    
+
     return (
       <div>
-        {r}
+        {his}
       </div>
     );
   }

@@ -27,6 +27,10 @@
   to { transform: rotate(360deg); }
 }
 
+body {
+  width: 100%;
+}
+
 .poster {
   width: 150px;
   margin: 2px;

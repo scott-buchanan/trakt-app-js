@@ -35,34 +35,18 @@ class App extends Component {
     const that = this;
     let history = [];
     trakt.users.history({ username: 'bukes' }).then(results => {
-      console.log(1);
       results.map(function(his) {
-        console.log(2);
-        if (his.type === "episode") {
-          mdata.images.show({
-            tvdb: his.show.ids.tvdb
-          }).then(result => {
-            if (result.poster === undefined) {
-              result.poster = "https://trakt.tv/assets/placeholders/thumb/poster-78214cfcef8495a39d297ce96ddecea1.png"
-            }
-            his = Object.assign(his, { poster: result.poster });
-            history.push(his);
-            that.setState({ history: history });
-          });
-        } else {
-          // mdata.images.show({
-          //   tvdb: history.movie.ids.tvdb
-          // }).then(result => {
-          //   this.setState({ history: Object.assign(history.movie, { poster: result.poster }) });
-          //   console.log(history);
-          //   this.forceUpdate();
-          // });
-        }
-      })}).then(() => {
-        console.log(4);
-        // that.setState({ history: history })
-        console.log(history);
-      });
+        let ttype;
+        (his.type === "episode") ? ttype = { tvdb: his.show.ids.tvdb } : ttype = { tmdb: his.movie.ids.tmdb };
+        mdata.images[(his.type === "episode") ? "show" : his.type](ttype).then(result => {
+          if (result.poster === undefined) {
+            result.poster = "https://trakt.tv/assets/placeholders/thumb/poster-78214cfcef8495a39d297ce96ddecea1.png"
+          }
+          his = Object.assign(his, { poster: result.poster });
+          history.push(his);
+          that.setState({ history: history });
+        });
+      })});
   }
 
   render() {
@@ -79,8 +63,15 @@ class App extends Component {
 
     const his = [];
     if (this.state.history !== undefined) {
-      this.state.history.map((show) => {
-        his.push(<div className="posterParent"><img src={show.poster} alt={show.show.title} className="poster" /></div>);
+      this.state.history.map((item) => {
+        switch (item.type) {
+          case "episode":
+            his.push(<div className="posterParent"><img src={item.poster} alt={item.show.title} className="poster" /></div>);
+            break;
+          case "movie":
+            his.push(<div className="posterParent"><img src={item.poster} alt={item.movie.title} className="poster" /></div>);
+            break;
+        }
       });
     }
 

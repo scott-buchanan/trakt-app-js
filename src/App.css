@@ -27,7 +27,12 @@
   to { transform: rotate(360deg); }
 }
 
-.poster img {
+.poster {
   width: 150px;
+  margin: 2px;
+}
+
+.posterParent {
+  border: 1px solid black;
   margin: 20px;
 }

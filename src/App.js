@@ -42,9 +42,9 @@ class App extends Component {
           mdata.images.show({
             tvdb: his.show.ids.tvdb
           }).then(result => {
-            // if (result.poster === undefined) {
-            //   result.poster = "https://trakt.tv/assets/placeholders/thumb/poster-78214cfcef8495a39d297ce96ddecea1.png"
-            // }
+            if (result.poster === undefined) {
+              result.poster = "https://trakt.tv/assets/placeholders/thumb/poster-78214cfcef8495a39d297ce96ddecea1.png"
+            }
             his = Object.assign(his, { poster: result.poster });
             history.push(his);
             that.setState({ history: history });
@@ -80,12 +80,12 @@ class App extends Component {
     const his = [];
     if (this.state.history !== undefined) {
       this.state.history.map((show) => {
-        his.push(<div><img src={show.poster} alt={show.show.title} className="poster" /></div>);
+        his.push(<div className="posterParent"><img src={show.poster} alt={show.show.title} className="poster" /></div>);
       });
     }
 
     return (
-      <div>
+      <div style={{ display: 'flex' }}>
         {his}
       </div>
     );

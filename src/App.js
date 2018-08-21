@@ -32,7 +32,26 @@ class App extends Component {
   }
 
   componentDidMount() {
-
+    const that = this;
+    trakt.users.history({ username: 'bukes' }).then(results => {
+      retVal.history = results.map(function(history) {
+        if (history.type === "episode") {
+          mdata.images.show({
+            tvdb: history.show.ids.tvdb
+          }).then(result => {
+            that.setState({ history: Object.assign(history.show, { poster: result.poster }) });
+            console.log(history);
+          });
+        } else {
+          // mdata.images.show({
+          //   tvdb: history.movie.ids.tvdb
+          // }).then(result => {
+          //   this.setState({ history: Object.assign(history.movie, { poster: result.poster }) });
+          //   console.log(history);
+          //   this.forceUpdate();
+          // });
+        }
+    })});
   }
 
   render() {

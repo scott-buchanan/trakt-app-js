@@ -5,6 +5,7 @@ const Trakt = require('trakt.tv');
 const trakt = new Trakt({
   client_id: '8b333edc96a59498525b416e49995b338e2c53a03738becfce16461c1e1086a3',
   client_secret: '93e1f2eb9e3c9e43cb06db7fd98feb630e8c90157579fa9af723d7181884ecb1',
+  redirect_uri: 'http://localhost:3000',
   debug: true,
 });
 const MData = require('mdata')
@@ -35,6 +36,7 @@ class App extends Component {
     const that = this;
     let history = [];
     trakt.users.history({ username: 'bukes' }).then(results => {
+      console.log("poop");
       results.map(function(his) {
         let ttype;
         (his.type === "episode") ? ttype = { tvdb: his.show.ids.tvdb } : ttype = { tmdb: his.movie.ids.tmdb };

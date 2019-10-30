@@ -5,7 +5,7 @@
   "dependencies": {
     "mdata": "^1.0.1",
     "react": "16.4.1",
-    "react-dom": "16.4.1",
+    "react-dom": "16.11.0",
     "react-scripts": "^3.0.1",
     "trakt.tv": "7.1.0"
   },
